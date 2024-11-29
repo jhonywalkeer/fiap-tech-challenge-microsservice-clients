@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  app:
+    container_name: app
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://root:1234@db:5432/fiap-tech-challenge-ms-clients-db
+    ports:
+      - '3000:3000'
+  db:
+    image: postgres
+    container_name: db
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=fiap-tech-challenge-ms-clients-db
+    ports:
+      - '5432:5432'
+networks:
+  default:
+    driver: bridge
