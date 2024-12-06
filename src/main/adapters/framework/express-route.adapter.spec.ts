@@ -1,11 +1,10 @@
 import { Controller } from '@application/protocols/http'
 import { StatusCode, ApiMethod } from '@common/enums'
 import { HttpException } from '@common/utils/exceptions'
+import { ExpressRouteAdapter } from '@main/adapters/framework'
 import { Request, Response, NextFunction } from 'express'
 
-import { ExpressRouteAdapter } from './express-route.adapter'
-
-describe('ExpressRouteAdapter', () => {
+describe('[Adapters] Express Route Adapter', () => {
   let mockController: Controller<any>
   let mockRequest: Partial<Request>
   let mockResponse: Partial<Response>
@@ -20,7 +19,7 @@ describe('ExpressRouteAdapter', () => {
       params: {},
       body: {},
       headers: {},
-      method: 'GET'
+      method: ApiMethod.Get
     }
     mockResponse = {
       status: jest.fn().mockReturnThis(),
@@ -89,6 +88,7 @@ describe('ExpressRouteAdapter', () => {
     mockController.handle = jest.fn().mockRejectedValue(error)
     const adapter = ExpressRouteAdapter(mockController)
     await adapter(mockRequest as Request, mockResponse as Response, mockNext)
+
     expect(mockResponse.status).toHaveBeenCalledWith(StatusCode.BadRequest)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status_code: StatusCode.BadRequest,

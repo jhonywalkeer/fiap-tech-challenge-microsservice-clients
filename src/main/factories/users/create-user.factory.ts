@@ -1,5 +1,5 @@
 import { CreateUserUC } from '@application/usecases/users'
-import { User } from '@domain/entities'
+import { UserEntity } from '@domain/entities'
 import { DatabaseConnection } from '@infrastructure/persistence/database'
 import {
   CreateUserPrismaRepository,
@@ -25,7 +25,7 @@ export const CreateUserControllerFactory = () => {
     findUserByConditionRepository,
     createUserRepository
   )
-  const genericSucessPresenter = new HttpGenericResponse<User>()
+  const genericSucessPresenter = new HttpGenericResponse<UserEntity>()
   const createUserController = new CreateUserController(
     createUserUseCase,
     genericSucessPresenter

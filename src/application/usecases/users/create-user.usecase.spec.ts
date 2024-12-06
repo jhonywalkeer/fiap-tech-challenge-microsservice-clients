@@ -6,7 +6,8 @@ import {
 import { CreateUserUC } from '@application/usecases/users'
 import { StatusCode, ErrorName } from '@common/enums'
 import { ExistsError } from '@common/errors'
-import { User } from '@domain/entities'
+import { Logger } from '@common/utils/loggers'
+import { UserEntity } from '@domain/entities'
 import { Field } from '@domain/enums'
 import { CreateUser } from '@domain/interfaces/user'
 import { CreateUserUseCase } from '@domain/usecases/user'
@@ -19,40 +20,44 @@ import { ExistsResourceStub } from '@stubs/exceptions'
 
 describe('[Use Cases] Create User Use Case', () => {
   let createUserUC: CreateUserUseCase
-  let findUserByIdRepository: FindUserByIdRepository
-  let findUserByConditionRepository: FindUserByConditionRepository
-  let createUserRepository: CreateUserRepository
+  let findUserByIdRepository: jest.Mocked<FindUserByIdRepository>
+  let findUserByConditionRepository: jest.Mocked<FindUserByConditionRepository>
+  let createUserRepository: jest.Mocked<CreateUserRepository>
+  let logger: jest.SpyInstance
 
   const input: CreateUser = InputUserBodyMock
-  const findedUserById: User = FindUserByIdMock
+  const findedUserById: UserEntity = FindUserByIdMock
 
   beforeEach(() => {
     findUserByIdRepository = {
       findById: jest.fn()
-    }
+    } as unknown as jest.Mocked<FindUserByIdRepository>
     findUserByConditionRepository = {
       findByCondition: jest.fn()
-    }
+    } as unknown as jest.Mocked<FindUserByConditionRepository>
     createUserRepository = {
       create: jest.fn()
-    }
+    } as unknown as jest.Mocked<CreateUserRepository>
+
     createUserUC = new CreateUserUC(
       findUserByIdRepository,
       findUserByConditionRepository,
       createUserRepository
     )
+
+    logger = jest.spyOn(Logger, 'info').mockImplementation()
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 
   it('should return the created user', async () => {
-    jest.spyOn(findUserByIdRepository, 'findById').mockResolvedValue(null)
-    jest
-      .spyOn(findUserByConditionRepository, 'findByCondition')
-      .mockResolvedValue(null)
-    jest
-      .spyOn(createUserRepository, 'create')
-      .mockResolvedValue(CreatedUserMock)
+    findUserByIdRepository.findById.mockResolvedValue(null)
+    findUserByConditionRepository.findByCondition.mockResolvedValue(null)
+    createUserRepository.create.mockResolvedValue(CreatedUserMock)
 
-    const result: User = await createUserUC.execute(input)
+    const result: UserEntity = await createUserUC.execute(input)
 
     expect(createUserUC.execute).toBeInstanceOf(Function)
     expect(findUserByIdRepository.findById).toHaveBeenCalledTimes(1)
@@ -65,13 +70,12 @@ describe('[Use Cases] Create User Use Case', () => {
     )
     expect(createUserRepository.create).toHaveBeenCalledTimes(1)
     expect(createUserRepository.create).toHaveBeenCalledWith(input)
+    expect(logger).toHaveBeenCalledWith('[CreateUserUC.execute]')
     expect(result).toEqual(CreatedUserMock)
   })
 
   it('should generate an error if the user already exists when searching by social security number (CPF)', async () => {
-    jest
-      .spyOn(findUserByIdRepository, 'findById')
-      .mockResolvedValue(findedUserById)
+    findUserByIdRepository.findById.mockResolvedValue(findedUserById)
 
     expect(() => createUserUC.execute(InputUserBodyMock)).rejects.toThrow(
       ExistsResourceStub
@@ -82,9 +86,9 @@ describe('[Use Cases] Create User Use Case', () => {
   })
 
   it('should generate an error if the user already exists when searching by mail', async () => {
-    jest
-      .spyOn(findUserByConditionRepository, 'findByCondition')
-      .mockResolvedValue([findedUserById] as User[])
+    findUserByConditionRepository.findByCondition.mockResolvedValue([
+      findedUserById
+    ] as UserEntity[])
 
     expect(() => createUserUC.execute(input)).rejects.toThrow(
       ExistsResourceStub

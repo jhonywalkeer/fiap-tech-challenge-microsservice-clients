@@ -1,6 +1,6 @@
 import { Repositories } from '@application/repositories/common'
 import { FindByIdRepository } from '@common/types'
-import { User } from '@domain/entities'
+import { UserEntity } from '@domain/entities'
 
 export interface FindUserByIdRepository
-  extends Omit<Repositories<User | null>, FindByIdRepository> {}
+  extends Omit<Repositories<UserEntity | null>, FindByIdRepository> {}

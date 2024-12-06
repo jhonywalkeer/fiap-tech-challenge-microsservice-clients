@@ -2,7 +2,7 @@ import { FindUserByIdDTO } from '@application/dtos/user'
 import { Controller, ResponseHandler } from '@application/protocols/http'
 import { StatusCode } from '@common/enums'
 import { HttpRequest, HttpResponse } from '@common/interfaces'
-import { User } from '@domain/entities'
+import { UserEntity } from '@domain/entities'
 import { FindUserByIdUseCase } from '@domain/usecases/user'
 import { FindUserByIdInputMock, FindUserByIdMock } from '@mocks/users'
 import { FindByIdController } from '@presentation/controllers/users'
@@ -10,15 +10,13 @@ import { FindByIdController } from '@presentation/controllers/users'
 describe('[Controllers] Find User By Id Controller', () => {
   it('should return the user found', async () => {
     const findUserByIdUC: FindUserByIdUseCase = {
-      execute: jest.fn().mockResolvedValue(FindUserByIdMock as User)
+      execute: jest.fn().mockResolvedValue(FindUserByIdMock as UserEntity)
     }
-    const findUserByIdPresenter: ResponseHandler<User> = {
-      response: jest.fn().mockReturnValue(FindUserByIdMock as User)
+    const findUserByIdPresenter: ResponseHandler<UserEntity> = {
+      response: jest.fn().mockReturnValue(FindUserByIdMock as UserEntity)
     }
-    const findUserByIdController: Controller<User> = new FindByIdController(
-      findUserByIdUC,
-      findUserByIdPresenter
-    )
+    const findUserByIdController: Controller<UserEntity> =
+      new FindByIdController(findUserByIdUC, findUserByIdPresenter)
 
     const request: HttpRequest = {
       params: {
@@ -26,7 +24,7 @@ describe('[Controllers] Find User By Id Controller', () => {
       }
     }
 
-    const response: HttpResponse<User> =
+    const response: HttpResponse<UserEntity> =
       await findUserByIdController.handle(request)
 
     expect(findUserByIdUC.execute).toHaveBeenCalledTimes(1)
@@ -35,9 +33,9 @@ describe('[Controllers] Find User By Id Controller', () => {
     )
     expect(findUserByIdPresenter.response).toHaveBeenCalledTimes(1)
     expect(findUserByIdPresenter.response).toHaveBeenCalledWith(
-      FindUserByIdMock as User,
+      FindUserByIdMock as UserEntity,
       StatusCode.Sucess
     )
-    expect(response).toEqual(FindUserByIdMock as User)
+    expect(response).toEqual(FindUserByIdMock as UserEntity)
   })
 })

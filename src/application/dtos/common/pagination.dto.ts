@@ -1,4 +1,4 @@
-import { LimitDefault, PageDefault } from '@common/constants'
+import { Pagination } from '@common/constants'
 import { Ordenation } from '@common/enums/ordenation.enum'
 import { Field } from '@domain/enums'
 import { IsEnumValidator } from '@presentation/validators'
@@ -10,8 +10,8 @@ export class PaginateDTO {
   order?: string
 
   constructor(
-    page: number = PageDefault,
-    limit: number = LimitDefault,
+    page: number = Pagination.Default.Page,
+    limit: number = Pagination.Default.Limit,
     sort?: string,
     order?: string
   ) {

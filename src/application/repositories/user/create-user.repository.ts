@@ -1,6 +1,6 @@
 import { Repositories } from '@application/repositories/common'
 import { CreateRepository } from '@common/types'
-import { User } from '@domain/entities'
+import { UserEntity } from '@domain/entities'
 
 export interface CreateUserRepository
-  extends Omit<Repositories<User>, CreateRepository> {}
+  extends Omit<Repositories<UserEntity>, CreateRepository> {}

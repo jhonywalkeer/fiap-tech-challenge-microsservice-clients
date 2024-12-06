@@ -8,11 +8,7 @@
 
 Esse microsserviço faz parte do sistema que foi desenvolvido para ajudar lanchonetes e restaurantes a gerenciar de forma eficiente os pedidos dos clientes, automatizando o processo de pedidos e integrando-os diretamente com a cozinha e o sistema de estoque. Através desta API, você pode implementar um sistema de autoatendimento que melhora a experiência do cliente, reduz erros e aumenta a eficiência operacional, tendo com objetivo especificamente o gerenciamento de usuários (criação e listagem).
 
-A aplicação como um todo possui 6 microserviços (contando com este) que são:
-
-A aplicação é composta por 6 microsserviços, sendo eles:
-
-- [fiap-tech-challenge-microsservice-employees]() - Microsserviço responsável por gerenciar os funcionários da aplicação.
+A aplicação é composta por 6 microsserviços (contando com esse), sendo eles:
 
 - [fiap-tech-challenge-microsservice-categories]() - Microsserviço responsável por gerenciar as categorias dos produtos da aplicação.
 
@@ -40,7 +36,7 @@ A documentação do sistema (DDD) com Event Storming segue abaixo (escolha o sis
   - [ADR-005 - Decisão de utilização de testes unitários]()
   - [ADR-006 - Decisão de utilização de testes utilizando BDD]()
 - [DocumentaDocumentação da API](./docs/readme/pt-br/documentacao-da-api.md)
-  - [Swagger preview (descrição e detalhes dos dados escritos em protuguês brasileiro)](./docs/swagger/swagger-render-image.png)
+  - [Swagger preview (descrição e detalhes dos dados escritos em protuguês brasileiro)](./docs/images/screenshots/swagger-render-image.png)
   - [Endpoints](./docs/readme/pt-br/endpoints.md)
     - [Health](./docs/readme/pt-br/endpoints-do-health.md)
     - [Usuários](./docs/readme/pt-br/endpoints-dos-usuarios.md)
@@ -49,3 +45,8 @@ A documentação do sistema (DDD) com Event Storming segue abaixo (escolha o sis
 - [Executando o Projeto]()
   - [Pré-requisitos]()
   - [Executando o projeto]()
+- [Metricas de testes do Projeto]()
+  - [Cobertura de testes]()
+  - [Testes unitários]()
+  - [Testes de integração]()
+  - [Testes de componentes (BDD)]()

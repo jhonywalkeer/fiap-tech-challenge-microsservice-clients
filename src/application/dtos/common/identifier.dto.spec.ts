@@ -1,6 +1,8 @@
 import { IdentifierDTO } from '@application/dtos/common'
+import { EmptyFiller } from '@common/constants'
 import { ErrorName, StatusCode } from '@common/enums'
 import { InvalidParamError } from '@common/errors'
+import { HttpException } from '@common/utils/exceptions'
 import { IsValidParameterValidator } from '@presentation/validators'
 import { InvalidParamStub } from '@stubs/exceptions'
 
@@ -8,30 +10,36 @@ jest.mock('@presentation/validators/is-valid-parameter')
 
 describe(`[DTO's] Identifier DTO`, () => {
   it('should call with the correct id', () => {
-    const value: string = '1'
-    new IdentifierDTO(value)
+    const input: string = '25097f13-505f-4236-9901-f9998add2b31'
+    new IdentifierDTO(input)
 
-    expect(IsValidParameterValidator).toHaveBeenCalledWith(value)
+    expect(IsValidParameterValidator).toHaveBeenCalledWith(input)
   })
 
   it('should throw an error if id is empty string', () => {
-    expect(() => new IdentifierDTO('')).toThrow(InvalidParamStub)
-    expect(InvalidParamStub.statusCode).toBe(StatusCode.BadRequest)
-    expect(InvalidParamStub.name).toBe(ErrorName.InvalidParameters)
-    expect(InvalidParamStub.message).toBe(InvalidParamError())
+    const httpException: HttpException = InvalidParamStub
+
+    expect(() => new IdentifierDTO(EmptyFiller)).toThrow(httpException)
+    expect(httpException.statusCode).toBe(StatusCode.BadRequest)
+    expect(httpException.name).toBe(ErrorName.InvalidParameters)
+    expect(httpException.message).toBe(InvalidParamError())
   })
 
   it('should throw an error if id is null', () => {
-    expect(() => new IdentifierDTO(null as any)).toThrow(InvalidParamStub)
-    expect(InvalidParamStub.statusCode).toBe(StatusCode.BadRequest)
-    expect(InvalidParamStub.name).toBe(ErrorName.InvalidParameters)
-    expect(InvalidParamStub.message).toBe(InvalidParamError())
+    const httpException: HttpException = InvalidParamStub
+
+    expect(() => new IdentifierDTO(null as any)).toThrow(httpException)
+    expect(httpException.statusCode).toBe(StatusCode.BadRequest)
+    expect(httpException.name).toBe(ErrorName.InvalidParameters)
+    expect(httpException.message).toBe(InvalidParamError())
   })
 
   it('should throw an error if id is undefined', () => {
-    expect(() => new IdentifierDTO(undefined as any)).toThrow(InvalidParamStub)
-    expect(InvalidParamStub.statusCode).toBe(StatusCode.BadRequest)
-    expect(InvalidParamStub.name).toBe(ErrorName.InvalidParameters)
-    expect(InvalidParamStub.message).toBe(InvalidParamError())
+    const httpException: HttpException = InvalidParamStub
+
+    expect(() => new IdentifierDTO(undefined as any)).toThrow(httpException)
+    expect(httpException.statusCode).toBe(StatusCode.BadRequest)
+    expect(httpException.name).toBe(ErrorName.InvalidParameters)
+    expect(httpException.message).toBe(InvalidParamError())
   })
 })

@@ -4,12 +4,17 @@ export const InputUserBodyMock = {
   name: 'Usuário de Teste'
 }
 
+export const InputIdMock = '25097f13-505f-4236-9901-f9998add2b31'
+
 export const InputUserParamMock = InputUserBodyMock.social_security_number
+
+export const InputUserMailMock = InputUserBodyMock.email
 
 export const CreateUserMock = InputUserBodyMock
 
 export const CreatedUserMock = {
-  id: '25097f13-505f-4236-9901-f9998add2b31',
+  id: InputIdMock,
+  created_at: new Date(),
   ...CreateUserMock
 }
 

@@ -3,19 +3,20 @@ import { Controller, ResponseHandler } from '@application/protocols/http'
 import { StatusCode } from '@common/enums'
 import { HttpRequest } from '@common/interfaces'
 import { Logger } from '@common/utils/loggers'
-import { User } from '@domain/entities'
+import { UserEntity } from '@domain/entities'
 import { FindUserByIdUseCase } from '@domain/usecases/user'
 
-export class FindByIdController implements Controller<User> {
+export class FindByIdController implements Controller<UserEntity> {
   constructor(
     private readonly findUserByIdUC: FindUserByIdUseCase,
-    private readonly findUserByIdPresenter: ResponseHandler<User>
+    private readonly findUserByIdPresenter: ResponseHandler<UserEntity>
   ) {}
   async handle(pathParameters: HttpRequest) {
     Logger.info('[FindByIdController.handle]')
+
     const { cpf } = pathParameters.params
     const parameters: FindUserByIdDTO = Object.assign(new FindUserByIdDTO(cpf))
-    const user: User = await this.findUserByIdUC.execute(parameters)
+    const user: UserEntity = await this.findUserByIdUC.execute(parameters)
 
     return this.findUserByIdPresenter.response(user, StatusCode.Sucess)
   }

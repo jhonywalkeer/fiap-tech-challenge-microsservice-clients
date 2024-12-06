@@ -1,8 +1,8 @@
-import { CreateUserMock } from '@mocks/users'
+import { CreateUserMock, InputIdMock } from '@mocks/users'
 
 export const FindUserByIdMock = {
   ...CreateUserMock,
-  id: '25097f13-505f-4236-9901-f9998add2b31',
+  id: InputIdMock,
   create_at: new Date(),
   update_at: new Date()
 }

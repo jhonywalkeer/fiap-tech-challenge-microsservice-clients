@@ -1,5 +1,7 @@
 # JavaScript Files
 /*.js
+cucumber.cjs
+stepdefs.js
 
 # Dependency directories
 node_modules

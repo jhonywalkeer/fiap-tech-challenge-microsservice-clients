@@ -2,7 +2,7 @@ import { ApplicationStatus } from '@common/enums'
 
 import { StatusApplicationIdentify } from './status-application.identify'
 
-describe('[Identifiers] Status Application Identify', () => {
+describe('[Identifier] Status Application Identify', () => {
   it('should return Up if both api and database are up', () => {
     const apiStatus: string = ApplicationStatus.Up
     const databaseStatus: string = ApplicationStatus.Up

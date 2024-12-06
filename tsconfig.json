@@ -23,11 +23,12 @@
       "@infrastructure/*": ["infrastructure/*"],
       "@main/*": ["main/*"],
       "@presentation/*": ["presentation/*"],
+      "@assertions/*": ["../tests/assertions/*"],
+      "@dummies/*": ["../tests/dummies/*"],
       "@mocks/*": ["../tests/mocks/*"],
-      "@stubs/*": ["../tests/stubs/*"],
-      "@dummies/*": ["../tests/dummies/*"]
+      "@stubs/*": ["../tests/stubs/*"]
     }
   },
   "include": ["src/**/*.ts", "./tests/**/**/*.ts", "./features/**/**/*.js"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "cucumber.cjs"]
 }

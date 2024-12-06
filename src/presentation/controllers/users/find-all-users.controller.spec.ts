@@ -3,7 +3,7 @@ import { Controller, ResponseHandler } from '@application/protocols/http'
 import { StatusCode } from '@common/enums'
 import { HttpRequest, HttpResponse } from '@common/interfaces'
 import { PaginateResponse } from '@common/types/paginate-response.type'
-import { User } from '@domain/entities'
+import { UserEntity } from '@domain/entities'
 import { FindAllUsersUseCase } from '@domain/usecases/user'
 import { PaginationInputMock } from '@mocks/pagination'
 import { FindAllPaginetedUsersMock, FindAllUsersMock } from '@mocks/users'
@@ -13,22 +13,22 @@ describe('[Controllers] Find All Users Controller', () => {
   it('should return all users', async () => {
     const findAllUserUC: FindAllUsersUseCase = {
       execute: jest.fn().mockResolvedValue({
-        data: FindAllUsersMock as User[],
+        data: FindAllUsersMock as UserEntity[],
         total: FindAllUsersMock.length
       })
     }
-    const findAllUserPresenter: ResponseHandler<PaginateResponse<User> | null> =
+    const findAllUserPresenter: ResponseHandler<PaginateResponse<UserEntity> | null> =
       {
         response: jest.fn().mockReturnValue(FindAllPaginetedUsersMock)
       }
-    const findAllUsersController: Controller<PaginateResponse<User> | null> =
+    const findAllUsersController: Controller<PaginateResponse<UserEntity> | null> =
       new FindAllUsersController(findAllUserUC, findAllUserPresenter)
 
     const request: HttpRequest = {
       query: PaginationInputMock
     }
 
-    const response: HttpResponse<PaginateResponse<User> | null> =
+    const response: HttpResponse<PaginateResponse<UserEntity> | null> =
       await findAllUsersController.handle(request)
 
     expect(findAllUserUC.execute).toHaveBeenCalledTimes(1)
@@ -45,7 +45,7 @@ describe('[Controllers] Find All Users Controller', () => {
     expect(findAllUserPresenter.response).toHaveBeenCalledTimes(1)
     expect(findAllUserPresenter.response).toHaveBeenCalledWith(
       {
-        data: FindAllUsersMock as User[],
+        data: FindAllUsersMock as UserEntity[],
         total: FindAllUsersMock.length
       },
       StatusCode.Sucess

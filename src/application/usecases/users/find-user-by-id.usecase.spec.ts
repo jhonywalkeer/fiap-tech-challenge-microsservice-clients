@@ -1,47 +1,90 @@
 import { FindUserByIdRepository } from '@application/repositories/user'
 import { FindUserByIdUC } from '@application/usecases/users'
-import { StatusCode, ErrorName, Operation } from '@common/enums'
+import { ErrorName, Operation, StatusCode } from '@common/enums'
 import { NotOccurredError } from '@common/errors'
-import { User } from '@domain/entities'
+import { HttpException } from '@common/utils/exceptions'
+import { Logger } from '@common/utils/loggers'
+import { UserEntity } from '@domain/entities'
 import { Field } from '@domain/enums'
 import { FindUserBySocialSecurityNumber } from '@domain/interfaces/user'
 import { FindUserByIdUseCase } from '@domain/usecases/user'
-import { FindUserByIdMock } from '@mocks/users'
-import { NotFoundStub } from '@stubs/exceptions'
+import { SendEventGateway } from '@infrastructure/gateways/queues'
+import { SendMessageAdapter } from '@main/adapters/queues/producers'
+import { FindUserByIdInputMock, FindUserByIdMock } from '@mocks/users'
+import { NotOccurredStub } from '@stubs/exceptions'
 
 describe('[Use Cases] Find User By Id Use Case', () => {
-  let findUserByIdRepository: FindUserByIdRepository
   let findUserByIdUC: FindUserByIdUseCase
+  let findUserByIdRepository: jest.Mocked<FindUserByIdRepository>
+  let sendMessageAdapter: jest.Mocked<SendMessageAdapter>
+  let sendEvent: SendEventGateway
+  let logger: jest.SpyInstance
 
-  const input: FindUserBySocialSecurityNumber = {
-    social_security_number: FindUserByIdMock.social_security_number
-  }
+  const users: UserEntity | null = FindUserByIdMock
 
   beforeEach(() => {
     findUserByIdRepository = {
       findById: jest.fn()
+    } as unknown as jest.Mocked<FindUserByIdRepository>
+    sendEvent = new SendEventGateway(sendMessageAdapter)
+    findUserByIdUC = new FindUserByIdUC(findUserByIdRepository, sendEvent)
+    logger = jest.spyOn(Logger, 'info').mockImplementation()
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it('should return a list of users with the pagination and filter', async () => {
+    const pathParameters: FindUserBySocialSecurityNumber = {
+      social_security_number: FindUserByIdInputMock
     }
-    findUserByIdUC = new FindUserByIdUC(findUserByIdRepository)
+
+    findUserByIdRepository.findById.mockResolvedValue(users)
+
+    const result: UserEntity = await findUserByIdUC.execute(pathParameters)
+
+    expect(logger).toHaveBeenCalledWith('[FindUserByIdUC.execute]')
+    expect(findUserByIdRepository.findById).toHaveBeenCalledWith(pathParameters)
+    expect(result).toBe(users)
   })
 
-  it('should return a user', async () => {
-    jest
-      .spyOn(findUserByIdRepository, 'findById')
-      .mockResolvedValue(FindUserByIdMock)
+  it('should throw an HttpException when not found user by id', async () => {
+    const pathParameters: FindUserBySocialSecurityNumber = {
+      social_security_number: FindUserByIdInputMock
+    }
 
-    const response: User = await findUserByIdUC.execute(input)
+    const httpException: HttpException = NotOccurredStub(
+      StatusCode.NotFound,
+      ErrorName.NotFoundInformation,
+      Operation.Find,
+      Field.User
+    )
 
-    expect(response).toEqual(FindUserByIdMock)
-  })
+    findUserByIdRepository.findById.mockResolvedValue(null)
 
-  it('should throw an error when the user is not found', async () => {
-    jest.spyOn(findUserByIdRepository, 'findById').mockResolvedValue(null)
+    expect(() => findUserByIdUC.execute(pathParameters)).rejects.toThrow(
+      httpException
+    )
 
-    expect(() => findUserByIdUC.execute(input)).rejects.toThrow(NotFoundStub)
-    expect(NotFoundStub.statusCode).toBe(StatusCode.NotFound)
-    expect(NotFoundStub.name).toBe(ErrorName.NotFoundInformation)
-    expect(NotFoundStub.message).toBe(
+    expect(httpException.statusCode).toBe(StatusCode.NotFound)
+    expect(httpException.name).toBe(ErrorName.NotFoundInformation)
+    expect(httpException.message).toBe(
       NotOccurredError(Operation.Find, Field.User)
     )
+  })
+
+  it('should send an event when the event parameter is true', async () => {
+    const pathParameters: FindUserBySocialSecurityNumber = {
+      social_security_number: FindUserByIdInputMock,
+      event: true
+    }
+
+    findUserByIdRepository.findById.mockResolvedValue(users)
+    sendEvent.execute = jest.fn()
+
+    await findUserByIdUC.execute(pathParameters)
+
+    expect(sendEvent.execute).toHaveBeenCalled()
   })
 })

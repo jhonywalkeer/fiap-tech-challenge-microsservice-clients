@@ -5,7 +5,7 @@ import * as path from 'path'
 jest.mock('fs')
 jest.mock('path')
 
-describe('VersionApiIdentify', () => {
+describe('[Identifier] Version Api Identify', () => {
   const mockReadFileSync = fs.readFileSync as jest.Mock
   const mockResolve = path.resolve as jest.Mock
 

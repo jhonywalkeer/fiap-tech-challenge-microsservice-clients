@@ -1,7 +1,7 @@
 import { StatusCode } from '@common/enums'
 import { HttpException } from '@common/utils/exceptions'
 
-describe('HttpException', () => {
+describe('[Exceptions] Http Exception', () => {
   it('should create an instance with the correct statusCode', () => {
     const exception = new HttpException(
       StatusCode.BadRequest,

@@ -1,7 +1,7 @@
 import { Operation } from '@common/enums'
 import { OperationIdentify } from '@common/utils/identifiers'
 
-describe('[Utils] Operation Identify', () => {
+describe('[Identifier] Operation Identify', () => {
   it('should return "buscar" when the operation is "find"', () => {
     const operation = Operation.Find
 

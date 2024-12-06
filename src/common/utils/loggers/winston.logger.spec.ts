@@ -1,6 +1,6 @@
-import { Logger } from './winston.logger'
+import { Logger } from '@common/utils/loggers'
 
-describe('Winston Logger', () => {
+describe('[Loggers] Winston Logger', () => {
   it('should be defined', () => {
     expect(Logger).toBeDefined()
   })

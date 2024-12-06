@@ -7,5 +7,8 @@ export const RepositoryMock = {
   findAll: jest.fn(),
   findById: jest.fn(),
   findByField: jest.fn(),
-  findByCondition: jest.fn()
+  findByCondition: jest.fn(),
+  findMany: jest.fn(),
+  findUnique: jest.fn(),
+  count: jest.fn()
 } as Repositories<any>

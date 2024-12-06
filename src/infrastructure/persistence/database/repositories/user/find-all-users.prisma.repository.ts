@@ -6,7 +6,7 @@ import { PaginateResponse } from '@common/types'
 import { HttpException } from '@common/utils/exceptions'
 import { PaginationFilter } from '@common/utils/filters'
 import { Logger } from '@common/utils/loggers'
-import { User } from '@domain/entities'
+import { UserEntity } from '@domain/entities'
 import { Field } from '@domain/enums'
 import { DatabaseConnection } from '@infrastructure/persistence/database'
 
@@ -15,7 +15,7 @@ export class FindAllUsersPrismaRepository implements FindAllUsersRepository {
 
   async findAll(
     payload: PaginationAndFilter
-  ): Promise<PaginateResponse<User> | null> {
+  ): Promise<PaginateResponse<UserEntity> | null> {
     try {
       const sortingField: string = payload.sort || 'created_at'
       const findUsers = await this.prisma.user.findMany({
@@ -36,7 +36,9 @@ export class FindAllUsersPrismaRepository implements FindAllUsersRepository {
             data: findUsers
           }
     } catch (error) {
-      Logger.error(error)
+      Logger.error(
+        `[FindAllUsersPrismaRepository.findAll]: Status Code ${StatusCode.InternalServerError} | ${error}`
+      )
       throw new HttpException(
         StatusCode.InternalServerError,
         ErrorName.InternalError,

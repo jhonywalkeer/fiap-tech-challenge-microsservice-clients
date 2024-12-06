@@ -4,21 +4,16 @@ import { StatusCode, ErrorName } from '@common/enums'
 import { InvalidParamError } from '@common/errors'
 import { RemoveDotsAndDashesFormat } from '@common/utils/formaters'
 import { InputUserParamMock } from '@mocks/users'
-import { IsValidParameterValidator } from '@presentation/validators'
 import { InvalidParamStub } from '@stubs/exceptions'
-
-jest.mock('@presentation/validators', () => ({
-  IsValidParameterValidator: jest.fn()
-}))
 
 describe(`[DTO's] Find User By Id DTO`, () => {
   it('should call with the correct social security number', () => {
     const value: string = InputUserParamMock
     const formattedValue: string = RemoveDotsAndDashesFormat(InputUserParamMock)
-    const dto = new FindUserByIdDTO(value)
+    const input = new FindUserByIdDTO(value)
 
-    expect(IsValidParameterValidator).toHaveBeenCalledWith(formattedValue)
-    expect(dto.social_security_number).toBe(formattedValue)
+    expect(input).toBeInstanceOf(FindUserByIdDTO)
+    expect(input.social_security_number).toBe(formattedValue)
   })
 
   it('should throw an error if social security number is empty string provided', () => {

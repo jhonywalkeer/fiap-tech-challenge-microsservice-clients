@@ -1,4 +1,4 @@
-import { ExpressRouteAdapter } from '@main/adapters'
+import { ExpressRouteAdapter } from '@main/adapters/framework'
 import { HealthCheckControllerFactory } from '@main/factories/health-check'
 import { HealthCheckRoute } from '@main/routes/health-check.route'
 import { Router } from 'express'

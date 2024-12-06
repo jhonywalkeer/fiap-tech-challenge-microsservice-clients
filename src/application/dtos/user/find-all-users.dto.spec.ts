@@ -1,5 +1,5 @@
 import { FindAllUsersDTO } from '@application/dtos/user'
-import { LimitDefault, PageDefault } from '@common/constants'
+import { Pagination } from '@common/constants'
 import { ErrorName, Ordenation, StatusCode } from '@common/enums'
 import { ValueIncorrectError } from '@common/errors'
 import { Field } from '@domain/enums'
@@ -21,8 +21,8 @@ describe(`[DTO's] Find All Users DTO`, () => {
       OrderMock
     )
 
-    expect(result.page).toBe(PageMock)
-    expect(result.limit).toBe(LimitMock)
+    expect(result.page).toBe(Pagination.Default.Page)
+    expect(result.limit).toBe(Pagination.Default.Limit)
     expect(result.sort).toBe(SortMock)
     expect(result.order).toBe(OrderMock)
   })
@@ -30,8 +30,8 @@ describe(`[DTO's] Find All Users DTO`, () => {
   it('should return the default values if no value is provided', () => {
     const result: FindAllUsersDTO = new FindAllUsersDTO()
 
-    expect(result.page).toBe(PageDefault)
-    expect(result.limit).toBe(LimitDefault)
+    expect(result.page).toBe(Pagination.Default.Page)
+    expect(result.limit).toBe(Pagination.Default.Limit)
     expect(result.sort).toBeUndefined()
     expect(result.order).toBe(Ordenation.ASC)
   })
@@ -44,8 +44,8 @@ describe(`[DTO's] Find All Users DTO`, () => {
       OrderMock
     )
 
-    expect(result.page).toBe(PageDefault)
-    expect(result.limit).toBe(LimitDefault)
+    expect(result.page).toBe(Pagination.Default.Page)
+    expect(result.limit).toBe(Pagination.Default.Limit)
     expect(result.sort).toBeUndefined()
     expect(result.order).toBe(Ordenation.ASC)
   })
@@ -58,8 +58,8 @@ describe(`[DTO's] Find All Users DTO`, () => {
       OrderMock
     )
 
-    expect(result.page).toBe(PageDefault)
-    expect(result.limit).toBe(LimitDefault)
+    expect(result.page).toBe(Pagination.Default.Page)
+    expect(result.limit).toBe(Pagination.Default.Limit)
     expect(result.sort).toBeUndefined()
     expect(result.order).toBe(Ordenation.ASC)
   })

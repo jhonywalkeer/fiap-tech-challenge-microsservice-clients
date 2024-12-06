@@ -3,7 +3,7 @@ import { Controller, ResponseHandler } from '@application/protocols/http'
 import { StatusCode } from '@common/enums'
 import { HttpRequest, HttpResponse } from '@common/interfaces'
 import { RemoveDotsAndDashesFormat } from '@common/utils/formaters'
-import { User } from '@domain/entities'
+import { UserEntity } from '@domain/entities'
 import { CreateUserUseCase } from '@domain/usecases/user'
 import { CreatedUserMock, InputUserBodyMock } from '@mocks/users'
 import { CreateUserController } from '@presentation/controllers/users'
@@ -13,19 +13,17 @@ describe('[Controllers] Create User Controller', () => {
     const createUserUC: CreateUserUseCase = {
       execute: jest.fn().mockResolvedValue(CreatedUserMock)
     }
-    const createUserPresenter: ResponseHandler<User> = {
+    const createUserPresenter: ResponseHandler<UserEntity> = {
       response: jest.fn().mockReturnValue(CreatedUserMock)
     }
-    const createUserController: Controller<User> = new CreateUserController(
-      createUserUC,
-      createUserPresenter
-    )
+    const createUserController: Controller<UserEntity> =
+      new CreateUserController(createUserUC, createUserPresenter)
 
     const request: HttpRequest = {
       body: InputUserBodyMock as CreateUserDTO
     }
 
-    const response: HttpResponse<User> =
+    const response: HttpResponse<UserEntity> =
       await createUserController.handle(request)
 
     expect(createUserUC.execute).toHaveBeenCalledTimes(1)

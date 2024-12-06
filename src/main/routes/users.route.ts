@@ -1,4 +1,4 @@
-import { ExpressRouteAdapter } from '@main/adapters'
+import { ExpressRouteAdapter } from '@main/adapters/framework'
 import {
   CreateUserControllerFactory,
   FindUserByIdControllerFactory,

@@ -5,7 +5,7 @@ import { HealthCheck } from '@domain/interfaces/health-check'
 import { HealthCheckUseCase } from '@domain/usecases/health-check'
 import { HealthCheckController } from '@presentation/controllers/health-check'
 
-describe('HealthCheckController', () => {
+describe('[Controllers] Health Check Controller', () => {
   it('should return the health check response', async () => {
     const healthCheckUC: HealthCheckUseCase = {
       execute: jest.fn().mockResolvedValue({
