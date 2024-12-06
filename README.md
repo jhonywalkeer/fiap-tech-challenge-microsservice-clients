@@ -18,8 +18,6 @@ A aplicação é composta por 6 microsserviços (contando com esse), sendo eles:
 
 - [fiap-tech-challenge-microsservice-payments](https://github.com/jhonywalkeer/fiap-tech-challenge-microsservice-payments) - Microsserviço responsável por gerenciar os pagamentos da aplicação.
 
-- [fiap-tech-challenge-microsservice-production-tracker](https://github.com/jhonywalkeer/fiap-tech-challenge-microsservice-production-tracker) - Microsserviço responsável por gerenciar a interface gráfica da aplicação.
-
 A documentação do sistema (DDD) com Event Storming segue abaixo (escolha o sistema que você tem mais afinidade) lambrado que a documentação que foi feita no Miro e no Figjan estao exclusivamente em português brasileiro:
 
 - **Miro**: https://miro.com/app/board/uXjVKLXulkE=/
